@@ -5,6 +5,9 @@ const courseRoute = require('./routes/courseRoute');
 const categoryRoute = require('./routes/categoryRoute');
 const userRoute = require('./routes/userRoute');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
+
+
 
 
 const app = express();
@@ -35,10 +38,9 @@ app.use(session({
     secret: 'my_keyword_cat',
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({mongoUrl:'mongodb://localhost/smartedu-db'}),
+
 }));
-
-
-
 
 //routes
 app.use('*',(req,res,next)=>{
