@@ -1,4 +1,4 @@
-const express = require('express');
+
 const mongoose = require('mongoose');
 const pageRoute = require('./routes/pageRoute');
 const courseRoute = require('./routes/courseRoute');
@@ -6,6 +6,9 @@ const categoryRoute = require('./routes/categoryRoute');
 const userRoute = require('./routes/userRoute');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const flash = require('connect-flash');
+const express = require('express');
+
 
 
 
@@ -41,6 +44,12 @@ app.use(session({
     store: MongoStore.create({mongoUrl:'mongodb://localhost/smartedu-db'}),
 
 }));
+app.use(flash());
+app.use((req, res, next)=> {
+  res.locals.flashMessages = req.flash();
+  next();
+})
+
 
 //routes
 app.use('*',(req,res,next)=>{
@@ -52,14 +61,6 @@ app.use('/',pageRoute);
 app.use('/courses',courseRoute);
 app.use('/categories',categoryRoute);
 app.use('/users',userRoute);
-
-
-
-
-
-
-
-
 
 
 app.listen(8080, () => {
